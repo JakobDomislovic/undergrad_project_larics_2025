@@ -101,17 +101,17 @@ At this level, it's enough to follow the commands in the next section. Docker is
 ## Hands-on #2
 Next, we'll create a Docker container for simulation. All scripts are pre-prepared; just run them.
 1. Enter the following command in the terminal (to save time, do this at home beforehand):
-        ```bash
-        docker pull lmark1/uav_ros_simulation:focal-nogpu-bin-0.2.1
-        ```
+    ```bash
+    docker pull lmark1/uav_ros_simulation:focal-nogpu-bin-0.2.1
+    ```
 2. Create an image from the Dockerfile, i.e., build it:
-        ```bash
-        ./docker_build.sh
-        ```
+    ```bash
+    ./docker_build.sh
+    ```
 3. Start the container (MANDATORY the first time, recommended to use this script afterward):
-        ```bash
-        ./docker_run.sh
-        ```
+     ```bash
+     ./docker_run.sh
+     ```
 
 ## Flight stack
 In programming, you'll often encounter the term *stack*, which represents software blocks that can work independently but, when connected, form a larger system. Below is an example of such a stack, the LARICS stack for autonomous flight.
@@ -152,25 +152,25 @@ Since robots are expensive and we're always short on time, the practice in robot
     cd gripper
     ```
 6. The package needs to be built:
-        ```bash
-        catkin build --this
-        ```
+    ```bash
+    catkin build --this
+    ```
 7. To make your package globally visible, you need to source it:
-        ```bash
-        roscd sim_ws
-        source devel/setup.bash
-        ```
+    ```bash
+    roscd sim_ws
+    source devel/setup.bash
+    ```
 8. Test if it was sourced correctly (if it finds it, it's okay; if not, there's an error):
-        ```bash
-        roscd gripper
-        ```
+    ```bash
+    roscd gripper
+    ```
 9. Teams that created a package should now push their changes. Reminder: The **.git** file is located in the main directory PredDiplProj2024, so you must always position yourself there when pushing.
-        ```bash
-        git status # review changes
-        git add .
-        git commit -m "create ROS package for team Gripper"
-        git push origin master
-        ```
+    ```bash
+    git status # review changes
+    git add .
+    git commit -m "create ROS package for team Gripper"
+    git push origin master
+    ```
 
 10. Bonus task for the trajectory team: Move the startup script to your ROS package and push your changes to GitHub.
 
