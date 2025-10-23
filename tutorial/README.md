@@ -39,22 +39,20 @@ Setting up an SSH key. It simplifies using Git. [HOWTO!](https://docs.github.com
 
 **NOTA BENE**
 - After making changes, it's always good to review what has been modified or added using the command:
-        
-        ```bash
-        git status
-        ```
+    ```bash
+    git status
+    ```
 - After your changes, always push your code. The most common pattern when pushing is to push all your changes:
         
-        ```bash
-        git add .
-        git commit -m "Add new ROS node for path planning"
-        git push origin master
-        ```
+    ```bash
+    git add .
+    git commit -m "Add new ROS node for path planning"
+    git push origin master
+    ```
 - If you know someone else has made changes, fetch (pull) the code, especially if you're working on the same branch:
-
-        ```bash
-        git pull origin master
-        ```
+    ```bash
+    git pull origin master
+    ```
 
 Common obstacles:
 - Conflicts during merging,
@@ -135,9 +133,9 @@ Since robots are expensive and we're always short on time, the practice in robot
 ## Hands-on #3 
 1. The simulation is started in the startup script. We use the startup script for different situations, e.g., testing in simulation, then testing the same code in the lab, and then again in the forest. In the startup script, we'll effectively change the "world" and the drone's behavior.
 
-        ```bash
-        ./startup/simulation/start.sh
-        ```
+    ```bash
+    ./startup/simulation/start.sh
+    ```
 
 2. Navigate through TMUX to understand the commands.
 
@@ -146,13 +144,13 @@ Since robots are expensive and we're always short on time, the practice in robot
 3. Close TMUX.
 
 4. Teams (team leaders) *trajectory* and *vision* should create a ROS package from their directories. Example:
-        ```bash
-        catkin_create_pkg gripper std_msgs rospy roscpp
-        ```
+    ```bash
+    catkin_create_pkg gripper std_msgs rospy roscpp
+    ```
 5. Enter the newly created package from step 4:
-        ```bash
-        cd gripper
-        ```
+    ```bash
+    cd gripper
+    ```
 6. The package needs to be built:
         ```bash
         catkin build --this
@@ -177,17 +175,18 @@ Since robots are expensive and we're always short on time, the practice in robot
 10. Bonus task for the trajectory team: Move the startup script to your ROS package and push your changes to GitHub.
 
 Cite:
-```@article{Markovic2023TowardsAS,
-    title={Towards A Standardized Aerial Platform: ICUAS’22 Firefighting Competition},
-    author={Lovro Markovic and Frano Petric and Antun Ivanovic and Jurica Goricanec and Marko Car and Matko Orsag and Stjepan Bogdan},
-    journal={Journal of Intelligent \& Robotic Systems},
-    year={2023},
-    volume={108},
-    pages={1-13},
-    url={https://api.semanticscholar.org/CorpusID:259503531}
+```
+@article{Markovic2023TowardsAS,
+title={Towards A Standardized Aerial Platform: ICUAS’22 Firefighting Competition},
+author={Lovro Markovic and Frano Petric and Antun Ivanovic and Jurica Goricanec and Marko Car and Matko Orsag and Stjepan Bogdan},
+journal={Journal of Intelligent \& Robotic Systems},
+year={2023},
+volume={108},
+pages={1-13},
+url={https://api.semanticscholar.org/CorpusID:259503531}
 }
 ```
 
 # Fusion
 
-todo.
+Praktikum robotike tutorial.
