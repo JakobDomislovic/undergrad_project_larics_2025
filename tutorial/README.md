@@ -63,19 +63,19 @@ Common obstacles:
 This is done one-by-one.
 
 1. Clone the repository:
-        ```bash
-        git clone git@github.com:JakobDomislovic/undergrad_project_larics_2025.git
-        cd undergrad_project_larics_2025/
-        ```
+    ```bash
+    git clone git@github.com:JakobDomislovic/undergrad_project_larics_2025.git
+    cd undergrad_project_larics_2025/
+    ```
 2. One by one, write your name in README.md.
 3. One person needs to create hello_world.py: ```print("Hello world!")```.
 4. Push your changes to GitHub (NB: You must be in the main directory undergrad_project_larics_2025 because that's where the .git file is located, which knows how to transfer changes it to GitHub. Other repositories don't have this!):
-        ```bash
-        git status # review your changes
-        git add . 
-        git commit -m "Add my name and Hello world script."
-        git push origin master
-        ```
+    ```bash
+    git status # review your changes
+    git add . 
+    git commit -m "Add my name and Hello world script."
+    git push origin master
+    ```
 6. Use the README.md in your directory as a work diary (weekly report). Not doing anything is also okay if there's a valid reason :-). 
 
 ## Docker
