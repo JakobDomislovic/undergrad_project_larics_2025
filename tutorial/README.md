@@ -100,7 +100,7 @@ Common commands:
 
 At this level, it's enough to follow the commands in the next section. Docker is becoming/has become an indispensable tool in all fields of computing, telecommunications, robotics, etc.
 
-## Hands-on #1
+## Hands-on #2
 Next, we'll create a Docker container for simulation. All scripts are pre-prepared; just run them.
 1. Enter the following command in the terminal (to save time, do this at home beforehand):
         ```bash
@@ -132,7 +132,7 @@ Since robots are expensive and we're always short on time, the practice in robot
 - New window: `ctrl+t`
 - Close TMUX: `ctrl+b (release) + k`
 
-## Hands-on #2 
+## Hands-on #3 
 1. The simulation is started in the startup script. We use the startup script for different situations, e.g., testing in simulation, then testing the same code in the lab, and then again in the forest. In the startup script, we'll effectively change the "world" and the drone's behavior.
 
         ```bash
@@ -187,3 +187,7 @@ Cite:
     url={https://api.semanticscholar.org/CorpusID:259503531}
 }
 ```
+
+# Fusion
+
+todo.
