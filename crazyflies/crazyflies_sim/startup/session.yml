@@ -1,0 +1,11 @@
+name: crazyflies_sim_example
+root: ./
+startup_window: crazyflies_start
+pre_window: |
+  source <%= @settings["setup_name"] %>
+windows:
+  - crazyflies_start:
+      layout: tiled
+      panes:
+        - bash /root/ros2_ws/src/crazyflies_sim/launch/sitl_multiagent_text.sh -m crazyflie -f $SPAWN_POSE_DOC -w $ENV_NAME -n $NUM_ROBOTS
+        - waitForCfsGazebo;sleep 1;bash ./generate_gazebo_bridge_yaml.sh $NUM_ROBOTS; ros2 launch crazyflies_sim system_launch.py
