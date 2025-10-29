@@ -2,6 +2,7 @@
 
 In this tutorial you will go through basics of git, docker and fusion. After each section there is small hands-on exercise. 
 
+---
 ## Git
 
 A **version control system**. An indispensable tool when multiple people are developing code. It is most commonly used in the terminal, but there are also GUI applications.
@@ -98,7 +99,43 @@ Common commands:
 
 At this level, it's enough to follow the commands in the next section. Docker is becoming/has become an indispensable tool in all fields of computing, telecommunications, robotics, etc.
 
-## Hands-on #2
+## Crazyflies
+
+### Hands-on #2
+---
+
+In this hands-on, you will set up crazyflies simulation stack and run your first simulation. Please refer to the document [here](../crazyflies/crazyflies_sim/docs/tutorial_handson_2.md) 
+
+### Control stack
+---
+
+Crazyflies are mini, open-source quadcopters designed primarily for research and education. Despite their small size (about 27 g), they feature a full flight stack, inertial sensors, and a flexible firmware. One of the main advantages is their modular design that supports a wide range of hardware decks, including the AI-deck for onboard vision processing and Flow-deck for optical flow-based stabilization, which you will be using in this project.
+
+Each Crazyflie communicates with your laptop via a Crazyradio dongle. Every UAV Crazyflie has a unique resource identifier, which looks like radio://0/90/2M/E7E7E7E7E7. The AI-deck is mounted on top of the Crazyflie and connects to a Wi-Fi router, streaming images over the UDP protocol that can be received by any computer connected to the same network. When using a single Crazyflie, the router can be bypassed, since the AI-deck can create its own Wi-Fi access point, allowing your computer to connect directly and stream images.
+
+<p align="center">
+  <img src="./figures/crazyflie_setup.png" width="850" alt="">
+</p>
+
+One major advantage of using Crazyflies for research and educational prototyping is the readily available control stack. The Crazyflie server, in combination with the Crazyswarm2 ROS 2 package, manages all low-level processing, control, and communication tasks. Your ROS 2 package can then directly interact with the Crazyflie through topics and services such as takeoff, landing, velocity control and image.
+
+### Hands-on #3
+---
+
+Connect to the WiFi Access Point on your laptop names `WiFi Streaming Example`.
+
+In one terminal run the script to stream images as a ROS 2 topic:
+
+```bash
+ros2 run crazyflies_sim aideck_streamer_demo.launch
+```
+
+This script processes incoming UDP packets into image frames and publishes them as a ROS 2 topic. You don’t need to worry about the internal workings of the script. You can then open rviz2 and visualize the image on the topic /cf_1/image.
+
+A separate Docker setup for hardware will be provided in the near future. This example is for demonstration only. Your algorithm should ideally remain consistent between simulation and hardware, requiring only parameter tuning if needed (eg adjusting control speeds, image preprocessing settings, safety checks etc).
+
+---
+## Hands-on #4
 Next, we'll create a Docker container for simulation. All scripts are pre-prepared; just run them.
 1. Enter the following command in the terminal (to save time, do this at home beforehand):
     ```bash
@@ -130,7 +167,7 @@ Since robots are expensive and we're always short on time, the practice in robot
 - New window: `ctrl+t`
 - Close TMUX: `ctrl+b (release) + k`
 
-## Hands-on #3 
+## Hands-on #5
 1. The simulation is started in the startup script. We use the startup script for different situations, e.g., testing in simulation, then testing the same code in the lab, and then again in the forest. In the startup script, we'll effectively change the "world" and the drone's behavior.
 
     ```bash

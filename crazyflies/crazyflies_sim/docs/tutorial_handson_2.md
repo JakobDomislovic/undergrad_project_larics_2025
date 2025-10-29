@@ -1,24 +1,11 @@
-# Crazyflie Simulation Environment
-
-This code contains the simulation stack for crazyflies. It is a modified version of the codebase used for the ICUAS25 and ICUAS26 Competitions. Original versions can be found [here](https://github.com/larics/icuas25_competition) and [here](https://github.com/larics/icuas26_competition).
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Prerequisites](#prerequisites)  
-3. [Installation & Setup](#installation--setup)
-4. [Quick Start Guide](#quick-start-guide)
-5. [ROS2 Interface Reference](#ros2-interface-reference)
-6. [Configuration & Customization](#configuration--customization)
-7. [Troubleshooting](#troubleshooting)
-
+# Hands-on #2: Crazyflie Simulation Setup
 ---
 
----
+In this hands-on, you will set up crazyflies simulation stack and run your first simulation.
 
-## Prerequisites
+## Docker Setup
 
-1. **Install Docker**
+1. **Install Docker:** Follow the link [here](https://github.com/larics/docker_files/wiki/2.-Installation) to install docker.
 
 2. **Enable GUI applications in Docker**:
    ```bash
@@ -31,9 +18,7 @@ This code contains the simulation stack for crazyflies. It is a modified version
 3. **NVIDIA GPU Support** (if available):
    Follow [NVIDIA Container Toolkit installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
----
-
-## Installation & Setup
+## Simulation Docker Setup
 
 ### Step 1: Situate yourself in the crazyflies sim folder
 ```bash
@@ -54,7 +39,7 @@ docker build --ssh default -t crazyflies_sim_img .
 
 If you want to develop your own ROS2 package and have it available inside the container:
 
-1. **Create your local ROS2 package** (outside the container in your local workspace)
+1. **Create your local ROS2 package** (outside the container in your local workspace). For now you can create an empty folder in this repo with your package name.
 
 2. **Bind your package to the container**:
    Edit the `first_run.sh` file and add your volume mount:
@@ -62,6 +47,13 @@ If you want to develop your own ROS2 package and have it available inside the co
    # Add this line in the docker run command (before the last backslash):
    --volume "/path/to/your/local/workspace/<package_name>:/root/ros2_ws/src/<package_name>:rw" \
    ```
+
+3. Also modify the path reference to the crazyflies_sim folder:
+    ```bash  
+    # Replace by your local path
+    --volume "/path/to/your/repo/undergrad_project_larics_2025/crazyflies/crazyflies_sim:/root/ros2_ws/src/crazyflies_sim" \
+    ```
+
 
 ### Step 4: Container Setup
 To set up and start the container:
@@ -77,9 +69,20 @@ docker start -i crazyflies_sim_cont
 docker exec -i crazyflies_sim_cont
 ```
 
+Additionally, rebuild the crazyflies_sim package:
+
+```bash
+cd ~/ros2_ws
+colcon build --packages-select crazyflies_sim --symlink-install --merge-install
+source install/setup.bash
+```
+
 ### Step 5: Ensure your local package binding is successful and build
 
-1. **Navigate to your package**:
+1. **IDE Setup**
+VS Code Users: Install the [Dev Containers extension](https://code.visualstudio.com/docs/remote/containers) to develop directly inside the container. Then press `ctrl+shift+p`, search for `Dev Containers: Attach to Running Container`. After this you should be able to see the container's filesystem in VS code.
+
+2. **Navigate to your package**:
    ```bash
    cd /root/ros2_ws/src/<your_package_name>
    ```
@@ -88,6 +91,7 @@ docker exec -i crazyflies_sim_cont
 3. **Build your package**:
    ```bash
    cd ~/ros2_ws
+   chmod +x src/crazyflies_sim/scripts/*  # makes all files in scripts/ executable
    colcon build --packages-select <your_package_name> --symlink-install --merge-install
    source install/setup.bash
    ```
@@ -96,11 +100,9 @@ docker exec -i crazyflies_sim_cont
    - Edit your files on your local machine using IDE
    - Changes are immediately reflected in the container files
 
-**⚠️ Important**: If you create packages inside the container without volume binding, they will be lost when the container is removed! Always backup your work or use volume binding for persistent development.
+**⚠️ Important**: If you create packages inside the container without volume binding, they will be lost when the container is removed! Always use volume binding for persistent development.
 
----
-
-## Quick Start Guide
+## Run the simulation
 
 ### Launch Simulation
 
@@ -137,19 +139,24 @@ docker exec -i crazyflies_sim_cont
 - **Empty world** environment (no obstacles)
 - **All ROS2 topics and services** active and ready
 
----
-
-## ROS2 Interface Reference
-
-> **Note**: Replace `X` with UAV number (e.g., `cf_1`, `cf_2`, etc.)
-
 ### Published Topics (UAV → Your Code)
+
+1. Run the following command to see the list of available topics:
+```bash
+ros2 topic list
+```
 
 #### Essential State Information
 ```bash
 cf_X/pose                    # geometry_msgs/msg/PoseStamped
 cf_X/odom                    # nav_msgs/msg/Odometry  
 ```
+
+2. Echo the pose topic to see its contents
+```bash
+ros2 topic echo /cf_1/pose
+```
+
 
 #### Camera & Sensors  
 ```bash
@@ -181,6 +188,30 @@ cf_X/land                    # crazyflie_interfaces/srv/Land
 cf_X/go_to                   # crazyflie_interfaces/srv/GoTo
 cf_X/emergency               # std_srvs/srv/Empty
 ```
+
+
+3. Takeoff and land a UAV
+```bash
+# Takeoff
+ros2 service call /cf_1/takeoff crazyflie_interfaces/srv/Takeoff "group_mask: 0
+height: 0.5
+duration:
+  sec: 3
+  nanosec: 0"
+
+# Land
+ros2 service call /cf_1/land crazyflie_interfaces/srv/Land "group_mask: 0
+height: 0.0
+duration:
+  sec: 0
+  nanosec: 0"
+```
+
+4. Run a sample python script for takeoff move around a bit and land:
+```bash
+ros2 run crazyflies_sim control_demo.py
+```
+
 
 ### Recommendations
 
@@ -220,58 +251,3 @@ Edit `/worlds/empty.sdf` to add/modify markers:
 - **Dictionary**: DICT_5X5_250 (OpenCV ArUco)
 - **Marker Size**: 0.25m (simulation) - parameterize for hardware transition
 - **IDs**: 1-5 (expandable)
-
----
-
-### IDE Integration
-**VS Code Users**: Install the [Dev Containers extension](https://code.visualstudio.com/docs/remote/containers) to develop directly inside the container:
-1. Start container: `docker start -i crazyflies_sim_cont`
-2. VS Code: `Ctrl+Shift+P` → "Dev Containers: Attach to Running Container"
-
----
-
-## Troubleshooting
-
-### Container Won't Start
-```bash
-# Check if Docker daemon is running
-sudo systemctl status docker
-
-# Reset container if corrupted
-docker stop crazyflies_sim_cont
-docker rm crazyflies_sim_cont # This is a destructive action! Make sure you packages are backup up and any changes inside the container have been copied to your local filesystem!
-./first_run.sh
-```
-
-### No GUI Display
-```bash
-# Re-enable X11 forwarding
-xhost +local:docker
-
-# Check DISPLAY variable
-echo $DISPLAY
-```
-
-### ROS2 Topics Not Visible
-```bash
-# Source the workspace
-source /root/ros2_ws/install/setup.bash
-
-# Check if nodes are running
-ros2 node list
-
-# Verify topic publication
-ros2 topic list
-ros2 topic echo /cf_1/pose
-```
-
----
-
-## Additional Resources
-
-- **CrazyFlie Documentation**: [Bitcraze Docs](https://www.bitcraze.io/documentation/)
-- **ROS2 Tutorials**: [ROS2 Learning Resources](https://docs.ros.org/en/humble/Tutorials.html)
-- **ArUco Detection**: [OpenCV ArUco Guide](https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html)
----
-
-*This simulation environment is based on the ICUAS Competition codebase. Original version: [larics/icuas25_competition](https://github.com/larics/icuas25_competition)*

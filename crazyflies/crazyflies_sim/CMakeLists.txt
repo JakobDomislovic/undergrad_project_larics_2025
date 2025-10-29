@@ -29,6 +29,8 @@ ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 install(PROGRAMS
   scripts/TransformWorld2Odom.py
+  scripts/control_demo.py
+  scripts/aideck_streamer_demo.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
