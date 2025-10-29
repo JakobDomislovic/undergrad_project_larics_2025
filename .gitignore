@@ -208,3 +208,6 @@ __marimo__/
 
 # Crazyflies related
 crazyflies/crazyflies_sim/first_run_test.sh
+crazyflies/**/cache/
+crazyflies/**/*.yml
+crazyflies/**/*.json
