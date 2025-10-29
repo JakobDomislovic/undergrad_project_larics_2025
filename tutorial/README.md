@@ -91,6 +91,7 @@ For example, we developed a system on a drone throughout the entire undergraduat
   <img src="./figures/docker.png" width="700" alt="">
 </p>
 Common commands:
+
 - `docker ps -a` - lists all installed containers and their statuses,
 - `docker image -ls` - lists all Docker images on the computer,
 - `docker build` - creates an image from a Dockerfile,
@@ -98,6 +99,19 @@ Common commands:
 - `docker exec -it ContainerName bash` - starts a container.
 
 At this level, it's enough to follow the commands in the next section. Docker is becoming/has become an indispensable tool in all fields of computing, telecommunications, robotics, etc.
+
+---
+
+## Flight stack
+In programming, you'll often encounter the term *stack*, which represents software blocks that can work independently but, when connected, form a larger system. Below is an example of such a stack, the LARICS stack for autonomous flight.
+
+The stack is placed in a Docker container and can be easily fetched. It contains the basic components needed for a drone to fly. Below is an image showing the stack's components. You don't need to know all of them; it's just given as an example.
+<p align="center">
+  <img src="./figures/stack.png" width="900" alt="">
+</p>
+
+Since robots are expensive and we're always short on time, the practice in robotics is to test everything in simulation first. That's why we'll use the same stack but already converted for simulation.
+
 
 ## Crazyflies
 
@@ -135,95 +149,17 @@ This script processes incoming UDP packets into image frames and publishes them 
 A separate Docker setup for hardware will be provided in the near future. This example is for demonstration only. Your algorithm should ideally remain consistent between simulation and hardware, requiring only parameter tuning if needed (eg adjusting control speeds, image preprocessing settings, safety checks etc).
 
 ---
-## Hands-on #4
-Next, we'll create a Docker container for simulation. All scripts are pre-prepared; just run them.
-1. Enter the following command in the terminal (to save time, do this at home beforehand):
-    ```bash
-    docker pull lmark1/uav_ros_simulation:focal-nogpu-bin-0.2.1
-    ```
-2. Create an image from the Dockerfile, i.e., build it:
-    ```bash
-    ./docker_build.sh
-    ```
-3. Start the container (MANDATORY the first time, recommended to use this script afterward):
-     ```bash
-     ./docker_run.sh
-     ```
-
-## Flight stack
-In programming, you'll often encounter the term *stack*, which represents software blocks that can work independently but, when connected, form a larger system. Below is an example of such a stack, the LARICS stack for autonomous flight.
-
-The stack is placed in a Docker container and can be easily fetched. It contains the basic components needed for a drone to fly. Below is an image showing the stack's components. You don't need to know all of them; it's just given as an example.
-<p align="center">
-  <img src="./figures/stack.png" width="900" alt="">
-</p>
-
-Since robots are expensive and we're always short on time, the practice in robotics is to test everything in simulation first. That's why we'll use the same stack but already converted for simulation.
-
-### TMUX
-[TMUX tutorial](https://github.com/larics/uav_ros_simulation/blob/main/HOWTO.md). Our shortcuts are:
-- Navigate through windows: `shift + ← →`
-- Navigate within a window: `ctrl + hjkl`
-- New window: `ctrl+t`
-- Close TMUX: `ctrl+b (release) + k`
-
-## Hands-on #5
-1. The simulation is started in the startup script. We use the startup script for different situations, e.g., testing in simulation, then testing the same code in the lab, and then again in the forest. In the startup script, we'll effectively change the "world" and the drone's behavior.
-
-    ```bash
-    ./startup/simulation/start.sh
-    ```
-
-2. Navigate through TMUX to understand the commands.
-
-3. Publish a point to the topic `/UAV_NAMESPACE/tracker/input_pose` where you want the drone to go. What is UAV_NAMESPACE?
-
-3. Close TMUX.
-
-4. Teams (team leaders) *trajectory* and *vision* should create a ROS package from their directories. Example:
-    ```bash
-    catkin_create_pkg gripper std_msgs rospy roscpp
-    ```
-5. Enter the newly created package from step 4:
-    ```bash
-    cd gripper
-    ```
-6. The package needs to be built:
-    ```bash
-    catkin build --this
-    ```
-7. To make your package globally visible, you need to source it:
-    ```bash
-    roscd sim_ws
-    source devel/setup.bash
-    ```
-8. Test if it was sourced correctly (if it finds it, it's okay; if not, there's an error):
-    ```bash
-    roscd gripper
-    ```
-9. Teams that created a package should now push their changes. Reminder: The **.git** file is located in the main directory PredDiplProj2024, so you must always position yourself there when pushing.
-    ```bash
-    git status # review changes
-    git add .
-    git commit -m "create ROS package for team Gripper"
-    git push origin master
-    ```
-
-10. Bonus task for the trajectory team: Move the startup script to your ROS package and push your changes to GitHub.
-
-Cite:
-```
-@article{Markovic2023TowardsAS,
-title={Towards A Standardized Aerial Platform: ICUAS’22 Firefighting Competition},
-author={Lovro Markovic and Frano Petric and Antun Ivanovic and Jurica Goricanec and Marko Car and Matko Orsag and Stjepan Bogdan},
-journal={Journal of Intelligent \& Robotic Systems},
-year={2023},
-volume={108},
-pages={1-13},
-url={https://api.semanticscholar.org/CorpusID:259503531}
-}
-```
 
 # Fusion
 
-Praktikum robotike tutorial.
+Download Fusion 360, you have student license. 
+
+After that download Fusion, and watch this tutorials one by one:
+
+1. https://www.autodesk.com/learn/ondemand/tutorial/introduction-to-fusion
+2. https://www.autodesk.com/learn/ondemand/tutorial/components-and-bodies
+3. https://www.autodesk.com/learn/ondemand/tutorial/sketch-fundamentals
+4. https://www.autodesk.com/learn/ondemand/tutorial/extrude-solid-bodies
+5. https://www.autodesk.com/learn/ondemand/curated/creating-assemblies
+
+Come to us with questions!
