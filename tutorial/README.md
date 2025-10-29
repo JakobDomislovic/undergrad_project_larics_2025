@@ -110,7 +110,7 @@ In this hands-on, you will set up crazyflies simulation stack and run your first
 <p align="center">
   <img src="./figures/tmux_cheat_sheet.png" width="1200" alt="">
 </p>
----
+
 
 ## Flight stack
 In programming, you'll often encounter the term *stack*, which represents software blocks that can work independently but, when connected, form a larger system. Below is an example of such a stack, the LARICS stack for autonomous flight.

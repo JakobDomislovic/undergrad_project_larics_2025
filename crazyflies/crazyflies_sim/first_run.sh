@@ -39,8 +39,8 @@ docker run -it \
     --volume="/dev:/dev" \
     --volume="/var/run/dbus/:/var/run/dbus/:z" \
     --volume ~/.ssh/ssh_auth_sock:/ssh-agent \
-    --volume "/<your_path>/<your_package>:/root/ros2_ws/src/<your_package>:rw" \
-    --volume "/<your_path>/undergrad_project_larics_2025/crazyflies/crazyflies_sim:/root/ros2_ws/src/crazyflies_sim:rw" \
+    --volume "/home/jakob/Desktop/studenti/undergrad_project_larics_2025/crazyflies/test_ws:/root/ros2_ws/src/test_ws:rw" \
+    --volume "/home/jakob/Desktop/studenti/undergrad_project_larics_2025/crazyflies/crazyflies_sim:/root/ros2_ws/src/crazyflies_sim:rw" \
     --env SSH_AUTH_SOCK=/ssh-agent \
     --net=host \
     --privileged \
