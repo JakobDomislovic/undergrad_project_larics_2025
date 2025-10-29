@@ -100,6 +100,16 @@ Common commands:
 
 At this level, it's enough to follow the commands in the next section. Docker is becoming/has become an indispensable tool in all fields of computing, telecommunications, robotics, etc.
 
+
+### Hands-on #2
+---
+
+In this hands-on, you will set up crazyflies simulation stack and run your first simulation. Please refer to the document [here](../crazyflies/crazyflies_sim/docs/tutorial_handson_2.md) 
+
+# tmux bindings
+<p align="center">
+  <img src="./figures/tmux_cheat_sheet.png" width="1200" alt="">
+</p>
 ---
 
 ## Flight stack
@@ -114,14 +124,6 @@ Since robots are expensive and we're always short on time, the practice in robot
 
 
 ## Crazyflies
-
-### Hands-on #2
----
-
-In this hands-on, you will set up crazyflies simulation stack and run your first simulation. Please refer to the document [here](../crazyflies/crazyflies_sim/docs/tutorial_handson_2.md) 
-
-### Control stack
----
 
 Crazyflies are mini, open-source quadcopters designed primarily for research and education. Despite their small size (about 27 g), they feature a full flight stack, inertial sensors, and a flexible firmware. One of the main advantages is their modular design that supports a wide range of hardware decks, including the AI-deck for onboard vision processing and Flow-deck for optical flow-based stabilization, which you will be using in this project.
 
