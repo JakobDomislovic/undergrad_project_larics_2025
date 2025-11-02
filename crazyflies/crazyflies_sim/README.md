@@ -47,8 +47,8 @@ cd_crazyflies_sim
 ./start.sh
 ```
 
-You can open a new terminal by running the following in a new terminal if you container is running:
-`docker exec -i crazyflies_sim_cont` or by opening a new tmux pane by pressing ctrl+b then c.
+Open new tmux pane by pressing `ctrl+b` (release) then `c`, or you can open a new terminal and write:
+`docker exec -it crazyflies_sim_cont bash`.
 
 The main file that you need to modify is located in `mini_hero_pkg/scripts/process_image.py`.
 
