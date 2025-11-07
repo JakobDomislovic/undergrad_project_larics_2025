@@ -33,7 +33,9 @@ docker exec -i piper_container
 ## Setting up the arm
 Official ROS2 Humble support for the Agilex Piper arm can be found here:
 https://github.com/agilexrobotics/piper_ros/tree/humble
+
 An additional resource that you might find useful is the quick start user manual for the robot arm, available here: https://cdn.robotshop.com/rbm/815d1a40-62cd-43a6-8dad-e05323e8953a/8/8c19397c-f1ab-4891-97e7-50fc64a8ef24/ac127c74_piper-quick-start-user-manual-en(1).pdf
+
 There are english instructions available in the ROS repository, which we will be following closely.
 In a terminal inside the container, clone the piper workspace:
 ```
