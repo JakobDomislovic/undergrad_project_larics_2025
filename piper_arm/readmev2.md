@@ -49,3 +49,11 @@
     ```bash
     docker exec -i crazyflies_sim_cont
     ```
+
+## Run Agilex PiPER simulation
+Now, you are able to run robot simulation and MoveIt scripts:
+```
+ros2 launch piper_gazebo piper_no_gripper_gazebo.launch.py
+ros2 launch piper_no_gripper_moveit piper_moveit.launch.py
+```
+Check that you are able to control the simulated robot arm by dragging the end effector to a new pose and clicking "Plan & Execute". The robot arm should move both in RViz and Gazebo.
