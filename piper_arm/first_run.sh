@@ -35,15 +35,15 @@ docker run -it \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --env="TERM=xterm-256color" \
+    --cap-add=NET_ADMIN \
+    --cap-add=SYS_RAWIO \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="/dev:/dev" \
     --volume="/var/run/dbus/:/var/run/dbus/:z" \
     --volume ~/.ssh/ssh_auth_sock:/ssh-agent \
-    --volume "/home/jakob/Desktop/undergrad_project_larics_2025/mini_hero_pkg:/root/ros2_ws/src/mini_hero_pkg:rw" \
-    --volume "/home/jakob/Desktop/undergrad_project_larics_2025/crazyflies/crazyflies_sim:/root/ros2_ws/src/crazyflies_sim:rw" \
     --env SSH_AUTH_SOCK=/ssh-agent \
     --net=host \
     --privileged \
     --gpus all \
-    --name crazyflies_sim_cont \
-    crazyflies_sim_img
+    --name piper_arm_cont \
+    piper_arm_img
