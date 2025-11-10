@@ -128,6 +128,7 @@ RUN sudo apt-get update \
     python3-rosdep \
     ros-dev-tools
 
+# TODO: Remove ros installation since it is already installed in the base image
 RUN apt-get update &&  apt-get upgrade -y && sudo apt install ros-${ROS2_DISTRO}-desktop -y
 
 RUN apt-get install -y python3-colcon-common-extensions
@@ -166,11 +167,16 @@ RUN apt-get update &&  apt-get upgrade -y && apt-get install -y \
 RUN apt install -y ros-${ROS2_DISTRO}-ros-gz${GZ_RELEASE}
 
 # Create aliases 
-RUN echo "alias source_ros2=\'source /opt/ros/humble/setup.bash'" >> ~/.bashrc && \
-    echo "alias source_ros2ws=\'source ~/piper_ros/install/setup.bash'" >> ~/.bashrc && \
-    echo "alias colcon_build=\'colcon build --symlink-install --merge-install'" >> ~/.bashrc
+WORKDIR $HOME
+RUN echo "alias source_ros2='source /opt/ros/humble/setup.bash'" >> $HOME/.bashrc && \
+    echo "alias source_ros2ws='source $HOME/piper_ros/install/setup.bash'" >> $HOME/.bashrc && \
+    echo "alias colcon_build='colcon build --symlink-install --merge-install'" >> $HOME/.bashrc
 
 RUN echo "export PATH='$HOME/.local/bin:$PATH'" >> $HOME/.bashrc
+
+# Auto-source ROS2 environment on bash startup
+RUN echo "source_ros2ws" >> $HOME/.bashrc && \
+    echo "source_ros2" >> $HOME/.bashrc
 
 # setup ros2 environment variables
 RUN echo "export ROS_LOCALHOST_ONLY=1" >> $HOME/.bashrc

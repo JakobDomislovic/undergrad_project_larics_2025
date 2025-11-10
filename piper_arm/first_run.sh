@@ -29,6 +29,7 @@ echo "Running docker..."
 
 # Hook to the current SSH_AUTH_LOCK - since it changes
 # https://www.talkingquickly.co.uk/2021/01/tmux-ssh-agent-forwarding-vs-code/
+mkdir -p ~/.ssh
 ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
 
 docker run -it \
