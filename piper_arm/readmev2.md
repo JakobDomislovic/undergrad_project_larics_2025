@@ -31,7 +31,7 @@
     export DOCKER_BUILDKIT=1
 
     # Build the simulation environment (this can take a few minutes)
-    docker build --ssh default -t piper_arm_img Dockerfile
+    docker build --ssh default -t piper_arm_img .
     ```
 
 3. Run the container.

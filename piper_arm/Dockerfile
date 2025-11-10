@@ -143,17 +143,11 @@ RUN VERSION="releases/mcap-cli/v0.0.55" && \
 
 # Build workspace
 WORKDIR $HOME/piper_ros
-RUN source /opt/ros/humble/setup.bash && \
-    colcon build --symlink-install --merge-install && \
-    source install/setup.bash
-
-# Create aliases 
-RUN echo "alias source_ros2=\'source /opt/ros/humble/setup.bash'" >> ~/.bashrc && \
-    echo "alias source_ros2ws=\'source ~/piper_ros/install/setup.bash'" >> ~/.bashrc && \
-    echo "alias colcon_build=\'colcon build --symlink-install --merge-install'" >> ~/.bashrc
+RUN bash -c "source /opt/ros/${ROS2_DISTRO}/setup.bash;source $HOME/piper_ros/install/setup.bash;colcon build --symlink-install --merge-install"
+RUN bash -c "source $HOME/piper_ros/install/setup.bash"
 
 
-RUN echo "export PATH='$HOME/.local/bin:$PATH'" >> $HOME/.bashrc
+
 
 RUN apt install libboost-program-options-dev libusb-1.0-0-dev
 RUN pip3 install rowan transforms3d
@@ -171,16 +165,16 @@ RUN apt-get update &&  apt-get upgrade -y && apt-get install -y \
     ros-${ROS2_DISTRO}-octomap-msgs
 RUN apt install -y ros-${ROS2_DISTRO}-ros-gz${GZ_RELEASE}
 
+# Create aliases 
+RUN echo "alias source_ros2=\'source /opt/ros/humble/setup.bash'" >> ~/.bashrc && \
+    echo "alias source_ros2ws=\'source ~/piper_ros/install/setup.bash'" >> ~/.bashrc && \
+    echo "alias colcon_build=\'colcon build --symlink-install --merge-install'" >> ~/.bashrc
+
+RUN echo "export PATH='$HOME/.local/bin:$PATH'" >> $HOME/.bashrc
+
 # setup ros2 environment variables
 RUN echo "export ROS_LOCALHOST_ONLY=1" >> $HOME/.bashrc
 RUN echo "export ROS_DOMAIN_ID=$(shuf -i 1-101 -n 1)" >> $HOME/.bashrc
-
-
-WORKDIR $HOME
-COPY to_copy/aliases $HOME/.bash_aliases
-COPY to_copy/nanorc $HOME/.nanorc
-COPY to_copy/tmux $HOME/.tmux.conf
-COPY to_copy/ranger $HOME/.config/ranger/rc.conf
 
 USER root
 WORKDIR $HOME
