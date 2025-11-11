@@ -17,3 +17,9 @@ Besides this .stl files you will need:
 Use [PrusaSlicer](https://www.prusa3d.com/page/prusaslicer_424/) to create .gcode and print it on 3D printer.
 
 For each new version create folder and name it v2, v3, etc.
+
+# Agiler PiPER 
+
+Instruction and tasks for Agilex PiPER mount.
+
+Students should come to FER and measure dimensions of flange.
