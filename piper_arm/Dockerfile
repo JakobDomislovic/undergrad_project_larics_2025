@@ -133,7 +133,6 @@ RUN apt-get update &&  apt-get upgrade -y && sudo apt install ros-${ROS2_DISTRO}
 
 RUN apt-get install -y python3-colcon-common-extensions
 
-
 #Add mcap to bag things in ROS2
 RUN VERSION="releases/mcap-cli/v0.0.55" && \
     RELEASE_URL=$(curl -s https://api.github.com/repos/foxglove/mcap/releases | jq -r --arg VERSION "$VERSION" '.[] | select(.tag_name == $VERSION) | .assets[0].browser_download_url') && \
@@ -141,14 +140,10 @@ RUN VERSION="releases/mcap-cli/v0.0.55" && \
     curl -L -o /bin/mcap "$RELEASE_URL" && \
     cd /bin && chmod +x mcap
 
-
 # Build workspace
 WORKDIR $HOME/piper_ros
 RUN bash -c "source /opt/ros/${ROS2_DISTRO}/setup.bash;source $HOME/piper_ros/install/setup.bash;colcon build --symlink-install --merge-install"
 RUN bash -c "source $HOME/piper_ros/install/setup.bash"
-
-
-
 
 RUN apt install libboost-program-options-dev libusb-1.0-0-dev
 RUN pip3 install rowan transforms3d
