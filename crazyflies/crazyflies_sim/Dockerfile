@@ -96,7 +96,6 @@ RUN apt-get update \
         python3-pytest-repeat \
         python3-pytest-rerunfailures
 
-
 # Agent forwarding during docker build https://stackoverflow.com/questions/43418188/ssh-agent-forwarding-during-docker-build
 
 ENV DOCKER_BUILDKIT=1
@@ -151,7 +150,6 @@ RUN cd $HOME/CrazySim/crazyflie-firmware \
     &&  cmake .. \
     &&  make all
 
-    
 #install other ROS2 ws packages
 RUN mkdir -p $HOME/ros2_ws/src \
   && cd $HOME/ros2_ws/src \
@@ -174,8 +172,6 @@ RUN chmod +x $HOME/ros2_ws/src/crazyswarm2/crazyflie/scripts/crazyflie_server.py
 RUN rm $HOME/ros2_ws/src/crazyswarm2/crazyflie_interfaces/CMakeLists.txt
 COPY to_copy/CMakeLists.txt $HOME/ros2_ws/src/crazyswarm2/crazyflie_interfaces/
 COPY to_copy/AttitudeSetpoint.msg $HOME/ros2_ws/src/crazyswarm2/crazyflie_interfaces/msg/
-
-
 
 WORKDIR $HOME
 # Add alias for sourcing for ros2 and ros2 workspace
@@ -205,14 +201,14 @@ RUN apt-get update &&  apt-get upgrade -y && apt-get install -y \
                    ros-${ROS2_DISTRO}-octomap \
                    ros-${ROS2_DISTRO}-octomap-ros \
                    ros-${ROS2_DISTRO}-octomap-server \
-                   ros-${ROS2_DISTRO}-octomap-msgs
-RUN apt install -y ros-${ROS2_DISTRO}-ros-gz${GZ_RELEASE}
+                   ros-${ROS2_DISTRO}-octomap-msgs \
+                   python3-gz-transport13
 
+RUN apt install -y ros-${ROS2_DISTRO}-ros-gz${GZ_RELEASE}
 
 # setup ros2 environment variables
 RUN echo "export ROS_LOCALHOST_ONLY=1" >> $HOME/.bashrc
 RUN echo "export ROS_DOMAIN_ID=$(shuf -i 1-101 -n 1)" >> $HOME/.bashrc
-
 
 WORKDIR $HOME/ros2_ws
 

@@ -31,6 +31,7 @@ install(PROGRAMS
   scripts/TransformWorld2Odom.py
   scripts/control_demo.py
   scripts/aideck_streamer_demo.py
+  scripts/aruco_keyboard_control.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
