@@ -1,9 +1,26 @@
 <?xml version="1.0" ?>
 <sdf version="1.9">
   <model name="aruco_marker_2">
-    <static>true</static>
+    <static>false</static>
     <link name="link">
+      <gravity>false</gravity>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.00001</ixx>
+          <iyy>0.00001</iyy>
+          <izz>0.00001</izz>
+        </inertia>
+      </inertial>
       <!-- ArUco Marker 0 -->
+      <collision name="aruco_marker_2_col">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.25 0.25 0.001</size>
+          </box>
+        </geometry>
+      </collision>
       <visual name="aruco_marker_2_vis">
         <pose>0 0 0 0 0 0</pose> <!-- Position: x, y, z; Rotation: roll, pitch, yaw -->
         <geometry>
