@@ -11,6 +11,10 @@ Panels:
         - /Map1/Topic1
         - /Path1
         - /Path1/Topic1
+        - /Marker2
+        - /Marker3
+        - /Marker3/Status1
+        - /Marker3/Topic1
       Splitter Ratio: 0.5
     Tree Height: 466
   - Class: rviz_common/Selection
@@ -168,10 +172,23 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /velocity_arrow
       Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: Marker
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /velocity_arrow
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: world
+    Fixed Frame: cf_1
     Frame Rate: 30
   Name: root
   Tools:
@@ -214,25 +231,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 8.680255889892578
+      Distance: 5.205509185791016
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.3645223379135132
-        Y: 0.8437618613243103
-        Z: 1.0786023139953613
+        X: 0.007584638427942991
+        Y: 0.18541446328163147
+        Z: -1.2434072494506836
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.31539860367774963
+      Pitch: 1.4453980922698975
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.138591289520264
+      Yaw: 3.2585878372192383
     Saved: ~
 Window Geometry:
   Displays:

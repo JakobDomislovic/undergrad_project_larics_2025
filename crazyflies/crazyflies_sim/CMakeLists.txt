@@ -32,6 +32,7 @@ install(PROGRAMS
   scripts/control_demo.py
   scripts/aideck_streamer_demo.py
   scripts/aruco_keyboard_control.py
+  scripts/hover_velocity_demo.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
