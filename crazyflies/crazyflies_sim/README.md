@@ -140,7 +140,7 @@ To set up and start the container:
 docker start -i crazyflies_sim_cont
 
 # To open another terminal in a already running container
-docker exec -i crazyflies_sim_cont
+docker exec -it crazyflies_sim_cont bash
 ```
 
 ### Step 5: Ensure your local package binding is successful and build
