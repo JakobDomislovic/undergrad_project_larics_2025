@@ -214,5 +214,5 @@ __marimo__/
 crazyflies/crazyflies_sim/first_run_test.sh
 crazyflies/crazyflies_sim/first_run.sh
 crazyflies/**/cache/
-crazyflies/**/*.yml
+# crazyflies/**/*.yml
 crazyflies/**/*.json

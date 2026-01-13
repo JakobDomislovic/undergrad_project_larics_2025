@@ -1,0 +1,14 @@
+name: example_session
+root: ./
+startup_window: crazyflies_start
+pre_window: |
+  source <%= @settings["setup_name"] %>
+windows:
+  - crazyflies_start:
+      layout: tiled
+      panes:
+        - ros2 launch crazyflies_hardware aideck_streamer_udp.launch.py
+        - sleep 5;ros2 launch crazyflies_hardware launch.py
+        # - python /root/ros2_ws/src/crazyflies_hardware/scripts/joy_emergency.py
+        # - history -s "ros2 bag record -s mcap --all"
+ 
