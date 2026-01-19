@@ -33,6 +33,7 @@ install(PROGRAMS
   scripts/aideck_streamer_demo.py
   scripts/aruco_keyboard_control.py
   scripts/hover_velocity_demo.py
+  scripts/pid_gui.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
