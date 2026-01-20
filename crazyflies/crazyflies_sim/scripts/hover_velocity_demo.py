@@ -287,20 +287,20 @@ class HoverVelocityDemoNode(Node):
         try:
 
 
-             # XY params
-            self.kp_xy = self.get_parameter('kp_xy').value
-            self.ki_xy = self.get_parameter('ki_xy').value
-            self.kd_xy = self.get_parameter('kd_xy').value
+            #  # XY params
+            # self.kp_xy = self.get_parameter('kp_xy').value
+            # self.ki_xy = self.get_parameter('ki_xy').value
+            # self.kd_xy = self.get_parameter('kd_xy').value
 
-            # Z params
-            self.kp_z = self.get_parameter('kp_z').value
-            self.ki_z = self.get_parameter('ki_z').value
-            self.kd_z = self.get_parameter('kd_z').value
+            # # Z params
+            # self.kp_z = self.get_parameter('kp_z').value
+            # self.ki_z = self.get_parameter('ki_z').value
+            # self.kd_z = self.get_parameter('kd_z').value
 
-            # Yaw params
-            self.kp_yaw = self.get_parameter('kp_yaw').value
-            self.ki_yaw = self.get_parameter('ki_yaw').value
-            self.kd_yaw = self.get_parameter('kd_yaw').value
+            # # Yaw params
+            # self.kp_yaw = self.get_parameter('kp_yaw').value
+            # self.ki_yaw = self.get_parameter('ki_yaw').value
+            # self.kd_yaw = self.get_parameter('kd_yaw').value
 
             # Update XY
             self.pid_x.kp = self.kp_xy
@@ -421,7 +421,7 @@ class HoverVelocityDemoNode(Node):
         self.pid_yaw.ki = self.ki_yaw
         self.pid_yaw.kd = self.kd_yaw
 
-        self.get_logger().info(f""" PID updated:
+        self.get_logger().info(f"""  PID updated:
         XY -> Kp={self.kp_xy}, Ki={self.ki_xy}, Kd={self.kd_xy}
         Z  -> Kp={self.kp_z}, Ki={self.ki_z}, Kd={self.kd_z}
         Yaw-> Kp={self.kp_yaw}, Ki={self.ki_yaw}, Kd={self.kd_yaw}
