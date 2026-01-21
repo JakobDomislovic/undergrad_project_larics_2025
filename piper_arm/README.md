@@ -60,3 +60,35 @@ ros2 launch piper_gazebo piper_no_gripper_gazebo.launch.py # in one terminal/pan
 ros2 launch piper_no_gripper_moveit piper_moveit.launch.py # in other terminal/pane
 ```
 Check that you are able to control the simulated robot arm by dragging the end effector to a new pose and clicking **Plan & Execute**. The robot arm should move both in RViz and Gazebo.
+
+# Run the full control pipeline on the NUC
+
+First, you need to ensure your devices are connected and the CAN ports configured:
+```bash
+cd mini_hero/can_scripts
+bash can_activate can0 1000000 3-4:1.0
+bash can_activate can1 500000 3-7:1.0
+```
+
+Now, start the docker container:
+```bash
+docker start elated_newton
+```
+You may enter into a container using the following command:
+```bash
+docker exec -it elated_newton bash
+```
+
+In the container run the following in separate terminals:
+```bash
+ros2 launch piper start_single_piper.launch.py
+
+ros2 launch piper_no_gripper_moveit piper_servo.launch.py
+
+ros2 service call /servo_node/start_servo std_srvs/srv/Trigger {}
+python3 controller_control.py
+
+ros2 run joy joy_node
+
+ros2 launch scout_base scout_base.launch.py
+```
