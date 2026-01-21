@@ -66,8 +66,8 @@ Check that you are able to control the simulated robot arm by dragging the end e
 First, you need to ensure your devices are connected and the CAN ports configured:
 ```bash
 cd mini_hero/can_scripts
-bash can_activate can0 1000000 3-4:1.0
-bash can_activate can1 500000 3-7:1.0
+bash can_activate.sh can0 1000000 3-4:1.0
+bash can_activate.sh can1 500000 3-7:1.0
 ```
 
 Now, start the docker container:
@@ -86,7 +86,7 @@ ros2 launch piper start_single_piper.launch.py
 ros2 launch piper_no_gripper_moveit piper_servo.launch.py
 
 ros2 service call /servo_node/start_servo std_srvs/srv/Trigger {}
-python3 controller_control.py
+python3 ~/piper_ros/src/piper_moveit/controller_control.py
 
 ros2 run joy joy_node
 
