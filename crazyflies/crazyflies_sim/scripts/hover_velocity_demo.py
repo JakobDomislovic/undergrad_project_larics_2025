@@ -52,7 +52,7 @@ class PID:
         else:
         
             self.integral += error * dt
-            derivative = (error - self.prev_error) / dt if dt > 0 or  self.prev_error is not None else 0.0
+            derivative = (error - self.prev_error) / dt if dt > 0 and  self.prev_error is not None else 0.0
 
         output = (
             self.kp * error +
@@ -426,6 +426,12 @@ class HoverVelocityDemoNode(Node):
         Z  -> Kp={self.kp_z}, Ki={self.ki_z}, Kd={self.kd_z}
         Yaw-> Kp={self.kp_yaw}, Ki={self.ki_yaw}, Kd={self.kd_yaw}
         """)
+
+        self.pid_x.reset()
+        self.pid_y.reset()
+        self.pid_z.reset()
+        self.pid_yaw.reset()
+        self.restart_measurements = True
 
 
 

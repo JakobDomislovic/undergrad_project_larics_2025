@@ -29,8 +29,6 @@ class ImageProcessingNode(Node):
         self.camera_matrix = None
         self.bridge = CvBridge()  # For converting between ROS and OpenCV images
 
-
-
         # Add ArUco setup
         self.aruco_dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_250)
         self.aruco_parameters = cv2.aruco.DetectorParameters_create()
@@ -38,7 +36,8 @@ class ImageProcessingNode(Node):
 
         self.marker_size = 0.25
 
-
+        # LOCK NA PRVI ARUCO MARKER
+        self.locked_aruco_id = None
 
         # Image subscriber        
         self.image_sub = self.create_subscription(
@@ -63,7 +62,6 @@ class ImageProcessingNode(Node):
             10
         )
 
-
         #Publisher for aruco location 
         self.aruco_poses_pub = self.create_publisher(
             PoseStamped,
@@ -81,6 +79,7 @@ class ImageProcessingNode(Node):
             "/arruco_arrow",
             10
         )
+
         # Timer for periodic processing with a rate of 10Hz (0.1s delay)
         self.create_timer(0.1, self._run_loop)
 
@@ -90,13 +89,10 @@ class ImageProcessingNode(Node):
 
         # Image and Image information is grabbed and stored in callbacks.
         # See camera_info_callback and image_callback
-
-
             
         # Check if image and camera info is received
         if self.image is not None and self.camera_matrix is not None:
             
-
             gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
             corners, ids, rejected = cv2.aruco.detectMarkers(
@@ -111,8 +107,25 @@ class ImageProcessingNode(Node):
                 self.aruco_poses_pub.publish(pose_stamped)
                 return
 
+            # pretvori ids u listu
+            ids_list = [int(i[0]) for i in ids]
 
-            
+            # zakljucavanje na prvi detektirani marker
+            if self.locked_aruco_id is None:
+                self.locked_aruco_id = ids_list[0]
+                self.get_logger().info(
+            f"Zakljucan na ArUco marker ID = {self.locked_aruco_id}"
+        )
+
+            # ako zakljucani marker nije vidljiv
+            if self.locked_aruco_id not in ids_list:
+                pose_stamped = PoseStamped()
+                pose_stamped.header.frame_id = "invalid"
+                self.aruco_poses_pub.publish(pose_stamped)
+                return
+
+            locked_idx = ids_list.index(self.locked_aruco_id)
+
             cv2.aruco.drawDetectedMarkers(self.image, corners, ids)
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
                 corners,
@@ -121,92 +134,82 @@ class ImageProcessingNode(Node):
                 self.dist_coeffs,
             )
 
-            #self.get_logger().info(f"tvecs: {tvecs},\nrvecs: {rvecs}")
             processed_image = self.image
 
-            for idx, corner in enumerate(corners):
-                pose_marker = Marker()
-                pose_marker.header.stamp = self.get_clock().now().to_msg()
-                pose_marker.header.frame_id = "cf_1"
+            idx = locked_idx
 
-                pose_marker.type = Marker.ARROW
+            pose_marker = Marker()
+            pose_marker.header.stamp = self.get_clock().now().to_msg()
+            pose_marker.header.frame_id = "cf_1"
+            pose_marker.type = Marker.ARROW
 
-                start_point = Point()
-                start_point.x = 0.0
-                start_point.y = 0.0
-                start_point.z = 0.0
+            start_point = Point()
+            start_point.x = 0.0
+            start_point.y = 0.0
+            start_point.z = 0.0
 
-                #rotating the original position:
-                # x = z
-                # y = -x
-                # z = -y
-                T = np.array([
-                    [0, 0, 1],
-                    [-1, 0, 0],
-                    [0, -1, 0]
-                ])
-                x, y, z = T @ tvecs[idx][0]
-                end_point = Point()
-                end_point.x = x
-                end_point.y = y
-                end_point.z = z
+            #rotating the original position:
+            # x = z
+            # y = -x
+            # z = -y
+            T = np.array([
+                [0, 0, 1],
+                [-1, 0, 0],
+                [0, -1, 0]
+            ])
+            x, y, z = T @ tvecs[idx][0]
+            end_point = Point()
+            end_point.x = x
+            end_point.y = y
+            end_point.z = z
 
-                pose_marker.points.append(start_point)
-                pose_marker.points.append(end_point)
+            pose_marker.points.append(start_point)
+            pose_marker.points.append(end_point)
 
-                pose_marker.scale.x = 0.02
-                pose_marker.scale.y = 0.04
-                pose_marker.scale.z = 0.1
+            pose_marker.scale.x = 0.02
+            pose_marker.scale.y = 0.04
+            pose_marker.scale.z = 0.1
 
-                pose_marker.color.r = 1.0
-                pose_marker.color.a = 1.0
+            pose_marker.color.r = 1.0
+            pose_marker.color.a = 1.0
 
+            R, _ = cv2.Rodrigues(rvecs[idx])
+            R_ros = T @ R
+            quaternion = tf_transformations.quaternion_from_matrix(
+                np.vstack((np.hstack((R_ros, np.array([[0], [0], [0]]))), [0, 0, 0, 1]))
+            )
 
-                R, _ = cv2.Rodrigues(rvecs[idx])
+            pose_stamped = PoseStamped()
+            pose_stamped.pose.position = end_point
+            pose_stamped.pose.orientation.x = float(quaternion[0])
+            pose_stamped.pose.orientation.y = float(quaternion[1])
+            pose_stamped.pose.orientation.z = float(quaternion[2])
+            pose_stamped.pose.orientation.w = float(quaternion[3])
 
-                R_ros = T @ R
-                quaternion = tf_transformations.quaternion_from_matrix(
-                    np.vstack((np.hstack((R_ros, np.array([[0], [0], [0]]))), [0, 0, 0, 1]))
-                )
-                pose_stamped = PoseStamped()
-                #first, second, yaw = tf_transformations.euler_from_quaternion(quaternion)
+            pose_stamped.header.frame_id = "cf_1"
+            pose_stamped.header.stamp = self.get_clock().now().to_msg()
 
-                #self.get_logger().info(f"first: {first}\nsecond: {second}\nyaw: {yaw}")
-                pose_stamped.pose.position = end_point
-                pose_stamped.pose.orientation.x = float(quaternion[0])
-                pose_stamped.pose.orientation.y = float(quaternion[1])
-                pose_stamped.pose.orientation.z = float(quaternion[2])
-                pose_stamped.pose.orientation.w = float(quaternion[3])
+            self.aruco_poses_pub.publish(pose_stamped)
+            self.aruco_arrow.publish(pose_marker)
 
-                pose_stamped.header.frame_id = "cf_1"
-                pose_stamped.header.stamp = self.get_clock().now().to_msg()
-               # self.get_logger().info(f"position: {pose_stamped}")
-                self.aruco_poses_pub.publish(pose_stamped)
-                
-                self.aruco_arrow.publish(pose_marker)
+            marker = Marker()
+            marker.header.frame_id = "cf_1"
+            marker.header.stamp = self.get_clock().now().to_msg()
+            marker.type = Marker.CUBE
+            marker.action = Marker.ADD
 
+            marker.pose = pose_stamped.pose
+            marker.scale.x = self.marker_size
+            marker.scale.y = self.marker_size
+            marker.scale.z = 0.002
 
-                marker = Marker()
-                marker.header.frame_id = "cf_1"
-                marker.header.stamp = self.get_clock().now().to_msg()
-                marker.type = Marker.CUBE
-                marker.action = Marker.ADD
+            marker.color.r = 0.0
+            marker.color.g = 1.0
+            marker.color.a = 0.8
 
-                marker.pose = pose_stamped.pose
-                marker.scale.x = self.marker_size
-                marker.scale.y = self.marker_size
-                marker.scale.z = 0.002
+            self.aruco_marker.publish(marker)
 
-                marker.color.r = 0.0
-                marker.color.g = 1.0
-                marker.color.a = 0.8
-                self.aruco_marker.publish(marker)
-
-
-
-            # Publish the processed image on /processed_image topic
             self.publish_processed_image(processed_image)
-
 
     #_________________________  Message Callbacks  _________________________
 
